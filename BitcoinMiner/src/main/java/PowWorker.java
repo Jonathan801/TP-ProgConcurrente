@@ -1,5 +1,6 @@
 import com.sun.org.apache.xpath.internal.objects.XObject;
 
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -23,11 +24,15 @@ public class PowWorker extends Thread implements Runnable {
     }
     public void run() {
         UnidadDeTrabajo unidadDeTrabajo = buffer.read();
-        for (int indice = unidadDeTrabajo.getMinimo(); indice < unidadDeTrabajo.getMaximo(); indice++){
-            Byte[] bytes =  algo.digest(indice);
-            return (bytes, unidadDeTrabajo);
+        int maximo = unidadDeTrabajo.getMaximo();
+        int minimo = unidadDeTrabajo.getMinimo();
+        for (int indice = minimo; indice < maximo; indice++){
+            byte[] bytes =  algo.digest(BigInteger.valueOf(indice).toByteArray());
+
+            buffer2.write(new Intento(bytes, indice,indice == maximo));
+
+
         }
-        Object numero = 15.toBytes();
     }
 }
 /*
