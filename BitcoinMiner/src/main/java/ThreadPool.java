@@ -6,9 +6,9 @@ public class ThreadPool {
         this.buffer = buffer;
     }
 
-    public iniciar(int threadsAmmount){
+    public void iniciar(int threadsAmmount){
         //create the powWorkers
-        for(threadsAmmount){
+        for(int indice = 0;indice<threadsAmmount;indice++){
             new PowWorker(buffer);
         }
 

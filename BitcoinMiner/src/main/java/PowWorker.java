@@ -23,7 +23,7 @@ public class PowWorker extends Thread implements Runnable {
     }
     public void run() {
         UnidadDeTrabajo unidadDeTrabajo = buffer.read();
-        for (int indice = unidadDeTrabajo.getMinimo(); indice < unidadDeTrabajo.getMaximo(); i++){
+        for (int indice = unidadDeTrabajo.getMinimo(); indice < unidadDeTrabajo.getMaximo(); indice++){
             Byte[] bytes =  algo.digest(indice);
             return (bytes, unidadDeTrabajo);
         }
