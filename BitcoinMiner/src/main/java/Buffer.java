@@ -1,18 +1,18 @@
 
 
 public class Buffer {
-    private Object [] data = new Object[N +1];
+    private UnidadDeTrabajo[] data = new UnidadDeTrabajo[N +1];
     private int begin = 0, end = 0;
 
-    public synchronized void write ( Object o ) {
+    public synchronized void write ( UnidadDeTrabajo o ) {
         while ( isFull()) wait();
         data [begin] = o;
         begin = next (begin);
         notifyAll();
     }
-    public synchronized Object read () {
+    public synchronized UnidadDeTrabajo read () {
         while (isEmpty()) wait();
-        Object result = data [ end ];
+        UnidadDeTrabajo result = data[end];
         end = next ( end );
         notifyAll();
         return result ;

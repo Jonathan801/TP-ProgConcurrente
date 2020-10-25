@@ -4,13 +4,12 @@ public class ThreadPool {
 
     public ThreadPool(Buffer buffer){
         this.buffer = buffer;
-
     }
 
-    public iniciar(int threads){
+    public iniciar(int threadsAmmount){
         //create the powWorkers
-        for(threads){
-            new PowWorker();
+        for(threadsAmmount){
+            new PowWorker(buffer);
         }
 
     }
