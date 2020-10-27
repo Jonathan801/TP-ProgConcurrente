@@ -27,31 +27,17 @@ public class PowWorker extends Thread implements Runnable {
         int maximo = unidadDeTrabajo.getMaximo();
         int minimo = unidadDeTrabajo.getMinimo();
         for (int indice = minimo; indice < maximo; indice++){
+            //Esto de aca serve para concatenar las dos cadenas de byte
+//            byte[] one = unidadDeTrabajo.getTexto().getBytes();
+//            byte[] two = BigInteger.valueOf(indice).toByteArray();
+//            byte[] combined = new byte[one.length + two.length];
+//            System.arraycopy(one,0,combined,0         ,one.length);
+//            System.arraycopy(two,0,combined,one.length,two.length);
+            //Seria result = algo.digest(combined);
             byte[] bytes =  algo.digest(BigInteger.valueOf(indice).toByteArray());
-
             buffer2.write(new Intento(bytes, indice,indice == maximo));
 
 
         }
     }
 }
-/*
-int resto = 2^32%cantThreads;
-int r = 2^32/cantThreads;
-for (int i = 0; i < cantThreads; i++){
-    min = i*r;
-    max = (r * (i +1)) -1;
-    if (i == cantThreads -1){max = max + resto}
-}
-
-int resto = 2^32%cantThreads;
-int r = 2^32/cantThreads;
-min = 0;
-max =
-for (int i = 0; i < cantThreads; i++){
-    buffer.write()
-    min = i*r;
-    max = (r * (i +1)) -1;
-    if (i == cantThreads -1){max = max + resto}
-}
-        */
