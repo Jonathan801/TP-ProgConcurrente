@@ -10,6 +10,7 @@ public class PowWorker extends Thread implements Runnable {
     private MessageDigest algo;
     private ThreadPool pool;
     private UnidadDeTrabajo unidad;
+    private ThreadManager manager;
     private boolean encontrado = false;
     private int dificultad;
 
@@ -42,9 +43,9 @@ public class PowWorker extends Thread implements Runnable {
             this.validation(result);
         }
         if(!encontrado){
-            //Logica de fallo
+            manager.noSeEncontroNonce(this);
         }else{
-            pool.killAll();
+            manager.seEncontroNonce(this);
 
         }
     }
@@ -56,4 +57,11 @@ public class PowWorker extends Thread implements Runnable {
     }
 
 
+    public void algo() { // caso exitoso
+        //Paro mi reloj interno y lo imprimo con el nonce
+    }
+
+    public void otroAlgo() { //caso F , si llego a este mensaje fui el ultimo thread en fallar
+        //Paro mi reloj interno y lo imprimo sin el nonce(ya que falle dahhh) y pidiendo perdon
+    }
 }
