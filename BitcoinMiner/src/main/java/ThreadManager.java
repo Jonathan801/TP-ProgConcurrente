@@ -13,10 +13,12 @@ public class ThreadManager {
     }
 
     public void noSeEncontroNonce(PowWorker pow){
-        if(cantidadDeThreads>0){
+        System.out.println("Cantidad de threads en manager " + cantidadDeThreads);
+        if(cantidadDeThreads>1){
             cantidadDeThreads -- ;
         }else{
             pow.otroAlgo();
         }
+        System.out.println("Comprobacion de perdida de sumas " + cantidadDeThreads);
     }
 }
