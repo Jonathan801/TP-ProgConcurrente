@@ -5,7 +5,6 @@ import java.util.Scanner;
 public class Main {
 
     private static int dificultad;
-    private int nonce;
 
     public static void main(String[] args) {
 //        //Atrapar los input del usuario
@@ -21,9 +20,9 @@ public class Main {
 //        System.out.println("2");
 
         //Atrapar los input del usuario
-        int cantidadThreads = 4;
-        dificultad = 2;
-        String texto = "HolaMundo";
+        int cantidadThreads = 10;
+        dificultad = 4;
+        String texto = "";
 
         Buffer buffer = new Buffer();
 
@@ -31,8 +30,8 @@ public class Main {
         System.out.println("Pre-Etapa : Creo los workers con el pool");
 
         threadPool.launch();
-        System.out.println("Los Workers se lanzaron");
 
+        System.out.println("Los Workers se lanzaron");
 
         int elevado = (int) Math.pow(2,32);
         int r = elevado / cantidadThreads;
@@ -49,9 +48,6 @@ public class Main {
             System.out.println("Se creo la Unidad de trabajo numero " + i);
             i++;
         }
-
-
-
 
     }
 

@@ -12,6 +12,7 @@ public class PowWorker extends Thread implements Runnable {
     private ThreadManager manager;
     private boolean encontrado = false;
     private int dificultad;
+    private long inicio;
     private ThreadPool pool;//Posible borrada
     private int nonceCorrecto;
 
@@ -28,17 +29,18 @@ public class PowWorker extends Thread implements Runnable {
 
     }
     public void run() {
-        System.out.println("Worker : Antes de obtener la unidad de trabajo");
+        //System.out.println("Worker : Antes de obtener la unidad de trabajo");
         this.unidad = buffer.read();
-        System.out.println("Worker : Ya con la unidad de trabajo");
+        this.inicio = System.currentTimeMillis();
+        //System.out.println("Worker : Ya con la unidad de trabajo");
         int maximo = unidad.getMaximo();
         int minimo = unidad.getMinimo();
         int indice = minimo;
-        System.out.println("Worker : Antes del while , el valor minimo es " + minimo);
-        System.out.println("Worker : Antes del while , el valor maximo es " + maximo);
+        //System.out.println("Worker : Antes del while , el valor minimo es " + minimo);
+        //System.out.println("Worker : Antes del while , el valor maximo es " + maximo);
         while(!encontrado && indice < maximo ){
             this.validation(indice);
-            System.out.println("Actualmente el nonse es " + indice);
+            //System.out.println("Actualmente el nonse es " + indice);
             indice++;
         }
         System.out.println("Worker : Se hallo el nonce correcto es " + encontrado);
@@ -65,12 +67,17 @@ public class PowWorker extends Thread implements Runnable {
     }
 
     public void seEncontroNonceCorrecto(int nonce) { // caso exitoso
-        //Paro mi reloj interno y lo imprimo con el nonce
+        long fin = System.currentTimeMillis();
+        double tiempo = (double) ((fin - this.inicio));
+        System.out.println(tiempo + " segundos");
         System.out.println("Worker : Se enconctro el nonce correcto y es " + nonce);
     }
 
     public void noSeEncontroNonceCorrecto() { //caso F , si llego a este mensaje fui el ultimo thread en fallar
         //Paro mi reloj interno y lo imprimo sin el nonce(ya que falle dahhh) y pidiendo perdon
+        long fin = System.currentTimeMillis();
+        double tiempo = (double) ((fin - this.inicio));
+        System.out.println(tiempo + " segundos");
         System.out.println("Worker : No se logro encontrar en ningun Worker el Nonce Correcto");
     }
 }
