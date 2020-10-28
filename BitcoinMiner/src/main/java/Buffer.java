@@ -1,5 +1,5 @@
 public class Buffer {
-    private UnidadDeTrabajo[] data = new UnidadDeTrabajo[2];
+    private UnidadDeTrabajo[] data = new UnidadDeTrabajo[3];
     private int begin = 0, end = 0;
 
     public synchronized void write ( UnidadDeTrabajo o ){
@@ -28,5 +28,5 @@ public class Buffer {
 
     private boolean isEmpty() {return begin == end;}
     private boolean isFull() {return next (begin) == end;}
-    private int next(int i) {return (i +1) % (2);}
+    private int next(int i) {return (i +1) % (3);}
 }
