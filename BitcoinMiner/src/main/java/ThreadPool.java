@@ -10,7 +10,6 @@ public class ThreadPool {
         this.cantidadThreads = cantidadThreads;
         this.manager = new ThreadManager(cantidadThreads);
         this.dificultad = dificultad;
-        //System.out.println("Etapa : Justo antes del for de la creacon de worker");
         //Logica de tiempo/reloj?
     }
 
@@ -18,15 +17,14 @@ public class ThreadPool {
         for (int i = 0; i < cantidadThreads; i++) {
             System.out.println("Etapa : Justo antes del new" + " " +i);
             PowWorker pow = new PowWorker(this.buffer,this,dificultad,manager);
-            pow.run();
-            System.out.println("TERMINO EL RUN DEL THREAD " + i);
+            pow.start();
         }
     }
 
     public void killAll() {
         //Logica de detener los threads
         for(int i=0;i < cantidadThreads;i++){
-            //TODO
+            //hacer
         }
     }
 }

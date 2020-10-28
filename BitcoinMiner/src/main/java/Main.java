@@ -22,8 +22,8 @@ public class Main {
 
         //Atrapar los input del usuario
         int cantidadThreads = 4;
-        dificultad = 1;
-        String texto = " ";
+        dificultad = 2;
+        String texto = "";
         System.out.println("Etapa : Asignacion Variables de Input");
 
         Buffer buffer = new Buffer();
@@ -35,25 +35,28 @@ public class Main {
 
         threadPool.launch();
 
+
         //Logica de calcular/preparar las unidades de trabajo
-        int r = 2 ^ 8 / cantidadThreads; //Es 2 ^ 32 pero para testing se cambio
-        int resto = 2 ^ 8 % cantidadThreads;//Es 2 ^ 32 pero para testing se cambio
-        for (int i = 0; i < cantidadThreads; i++) {
+
+        int elevado = (int) Math.pow(2,32);
+        int r = elevado / cantidadThreads;
+        int resto = elevado % cantidadThreads;
+        int i = 0;
+        while(i<cantidadThreads) {
             int minimo = i * r;
             int maximo = (r * (i + 1));
             if (i == cantidadThreads - 1) {
                 maximo = maximo + resto;
+                i++;
             }
-            System.out.println("Dentro del creador de unidad  i= " + i);
             UnidadDeTrabajo unidad = new UnidadDeTrabajo(minimo, maximo, texto);
             buffer.write(unidad);
+            System.out.println("Dentro del creador de unidad  i= " + i);
+            i++;
         }
 
-        System.out.println("Justo antes del LANZAMIENTO");
 
-        System.out.println("Etapa : Deistribuir TODAS las weas");
 
-        //Creo los threads y les paso el buffer
 
     }
 

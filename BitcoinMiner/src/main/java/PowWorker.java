@@ -19,7 +19,6 @@ public class PowWorker extends Thread implements Runnable {
         this.pool = pool;
         this.dificultad = dificultad;
         this.manager = manager;
-        System.out.println("Etapa : Justo antes del try de worker");
         try {
             algo = MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException e) {
@@ -34,12 +33,15 @@ public class PowWorker extends Thread implements Runnable {
         int maximo = unidad.getMaximo();
         int minimo = unidad.getMinimo();
         int indice = minimo;
-        while(!encontrado && indice < maximo ){
+        System.out.println("Antes del while " + minimo);
+        System.out.println("Antes del while " + maximo);
+        while(!encontrado && indice < maximo ){ // No esta recorriendo todos los numeros(corriendolo solo recorrio 1..4)
             this.validation(indice);
+            System.out.println("Estoy mirando el numero " + indice);
             indice++;
+            ;
         }
         System.out.println("El valor de encontrado es " + encontrado);
-        System.out.println("Etapa : despues del while del validation");
         if(!encontrado){
             manager.noSeEncontroNonce(this);
         }else{
