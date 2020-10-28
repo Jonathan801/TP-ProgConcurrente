@@ -13,6 +13,7 @@ public class PowWorker extends Thread implements Runnable {
     private boolean encontrado = false;
     private int dificultad;
     private ThreadPool pool;//Posible borrada
+    private int nonceCorrecto;
 
     public PowWorker(Buffer buffer,ThreadPool pool,int dificultad,ThreadManager manager) {
         this.buffer = buffer;
@@ -27,53 +28,49 @@ public class PowWorker extends Thread implements Runnable {
 
     }
     public void run() {
-        System.out.println("Etapa : dentro del run del worker");
+        System.out.println("Worker : Antes de obtener la unidad de trabajo");
         this.unidad = buffer.read();
-        System.out.println("Etapa : dentro del run del worker y desoues del buffer");
+        System.out.println("Worker : Ya con la unidad de trabajo");
         int maximo = unidad.getMaximo();
         int minimo = unidad.getMinimo();
         int indice = minimo;
-        System.out.println("Antes del while " + minimo);
-        System.out.println("Antes del while " + maximo);
-        while(!encontrado && indice < maximo ){ // No esta recorriendo todos los numeros(corriendolo solo recorrio 1..4)
+        System.out.println("Worker : Antes del while , el valor minimo es " + minimo);
+        System.out.println("Worker : Antes del while , el valor maximo es " + maximo);
+        while(!encontrado && indice < maximo ){
             this.validation(indice);
-            System.out.println("Estoy mirando el numero " + indice);
+            System.out.println("Actualmente el nonse es " + indice);
             indice++;
-            ;
         }
-        System.out.println("El valor de encontrado es " + encontrado);
+        System.out.println("Worker : Se hallo el nonce correcto es " + encontrado);
         if(!encontrado){
             manager.noSeEncontroNonce(this);
         }else{
-            manager.seEncontroNonce(this);
+            manager.seEncontroNonce(this,indice - 1);
 
         }
     }
 
     private void validation(int nonceCandidato){
         boolean local = true;
-        //Esto de aca serve para concatenar las dos cadenas de byte
         byte[] one = unidad.getTexto().getBytes();
         byte[] two = BigInteger.valueOf(nonceCandidato).toByteArray();
         byte[] combined = new byte[one.length + two.length];
         System.arraycopy(one,0,combined,0         ,one.length);
         System.arraycopy(two,0,combined,one.length,two.length);
         byte[] result = algo.digest(combined);
-
         for(int indice = 0;indice<this.dificultad;indice++){
             local = local && result[indice] == 0;
         }
         encontrado = local;
     }
 
-
-    public void algo() { // caso exitoso
+    public void seEncontroNonceCorrecto(int nonce) { // caso exitoso
         //Paro mi reloj interno y lo imprimo con el nonce
-        System.out.println("We are the champions");
+        System.out.println("Worker : Se enconctro el nonce correcto y es " + nonce);
     }
 
-    public void otroAlgo() { //caso F , si llego a este mensaje fui el ultimo thread en fallar
+    public void noSeEncontroNonceCorrecto() { //caso F , si llego a este mensaje fui el ultimo thread en fallar
         //Paro mi reloj interno y lo imprimo sin el nonce(ya que falle dahhh) y pidiendo perdon
-        System.out.println("No me peges");
+        System.out.println("Worker : No se logro encontrar en ningun Worker el Nonce Correcto");
     }
 }

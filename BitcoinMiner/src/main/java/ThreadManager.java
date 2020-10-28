@@ -6,19 +6,17 @@ public class ThreadManager {
         this.cantidadDeThreads = cantidad;
     }
 
-    public void seEncontroNonce(PowWorker pow){
+    public void seEncontroNonce(PowWorker pow,int nonce){
         if(!encontrado){
-            pow.algo();
+            pow.seEncontroNonceCorrecto(nonce);
         }
     }
 
     public void noSeEncontroNonce(PowWorker pow){
-        System.out.println("Cantidad de threads en manager " + cantidadDeThreads);
         if(cantidadDeThreads>1){
             cantidadDeThreads -- ;
         }else{
-            pow.otroAlgo();
+            pow.noSeEncontroNonceCorrecto();
         }
-        System.out.println("Comprobacion de perdida de sumas " + cantidadDeThreads);
     }
 }
