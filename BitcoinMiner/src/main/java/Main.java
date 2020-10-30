@@ -24,7 +24,7 @@ public class Main {
         dificultad = 1;
         String texto = "";
 
-        Buffer buffer = new Buffer();
+        Buffer buffer = new Buffer(2);
 
         System.out.println("Pre-Etapa : Creo los workers con el pool");
         ThreadPool threadPool = new ThreadPool(buffer, cantidadThreads, dificultad);
@@ -45,9 +45,12 @@ public class Main {
             }
             UnidadDeTrabajo unidad = new UnidadDeTrabajo(minimo, maximo, texto);
             buffer.write(unidad);
-            System.out.println("Se creo la Unidad de trabajo numero " + i);
+            //System.out.println("Se creo la Unidad de trabajo numero " + i);
             i++;
         }
+
     }
+
+
 }
 
