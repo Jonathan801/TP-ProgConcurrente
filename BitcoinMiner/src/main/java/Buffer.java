@@ -3,10 +3,10 @@ public class Buffer {
     private int begin = 0, end = 0;
 
     public synchronized void write ( UnidadDeTrabajo o ){
-        while ( isFull()){
-            {
-                try { wait(); }
-                catch (InterruptedException ignored) { }
+        while (isFull()){
+            try { wait();
+            }
+            catch (InterruptedException ignored) {
             }
         }
         data [begin] = o;
@@ -15,9 +15,8 @@ public class Buffer {
     }
     public synchronized UnidadDeTrabajo read(){
         while (isEmpty()) {
-            {
-                try { wait(); }
-                catch (InterruptedException ignored) { }
+            try { wait(); }
+                catch (InterruptedException ignored) {
             }
         }
         UnidadDeTrabajo result = data[end];

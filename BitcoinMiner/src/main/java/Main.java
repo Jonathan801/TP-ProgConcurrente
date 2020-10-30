@@ -20,26 +20,26 @@ public class Main {
 //        System.out.println("2");
 
         //Atrapar los input del usuario
-        int cantidadThreads = 10;
-        dificultad = 4;
+        int cantidadThreads = 1;
+        dificultad = 1;
         String texto = "";
 
         Buffer buffer = new Buffer();
 
-        ThreadPool threadPool = new ThreadPool(buffer, cantidadThreads, dificultad);
         System.out.println("Pre-Etapa : Creo los workers con el pool");
-
-        threadPool.launch();
-
+        ThreadPool threadPool = new ThreadPool(buffer, cantidadThreads, dificultad);
         System.out.println("Los Workers se lanzaron");
 
-        int elevado = (int) Math.pow(2,32);
+        int elevado = (int) Math.pow(2,32); // 2^32
         int r = elevado / cantidadThreads;
         int resto = elevado % cantidadThreads;
         int i = 0;
         while(i<cantidadThreads) {
             int minimo = i * r;
             int maximo = (r * (i + 1));
+            //bit = resto>0? 1 : 0;
+            //resto--;
+            //int maximo = (r * (i + 1)) + bit;
             if (i == cantidadThreads - 1) {
                 maximo = maximo + resto;
             }
@@ -48,9 +48,6 @@ public class Main {
             System.out.println("Se creo la Unidad de trabajo numero " + i);
             i++;
         }
-
     }
-
-
 }
 

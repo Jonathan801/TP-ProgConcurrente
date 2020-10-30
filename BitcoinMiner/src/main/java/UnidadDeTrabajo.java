@@ -9,6 +9,7 @@ public class UnidadDeTrabajo {
         this.maximo = maximo;
         this.texto  = texto;
     }
+
     public int getMinimo(){
         return this.minimo;
     }
