@@ -7,9 +7,9 @@ import java.security.NoSuchAlgorithmException;
 public class PowWorker extends Thread implements Runnable {
 
     private ThreadPool pool;
-    private final Buffer buffer;
     private MessageDigest sha256;
     private UnidadDeTrabajo unidad;
+    private final Buffer buffer;
     private boolean encontrado = false;
     private boolean alguienLoEncontro = false;
     private int dificultad;
@@ -62,8 +62,8 @@ public class PowWorker extends Thread implements Runnable {
     public void seEncontroNonceCorrecto(int nonce) { // caso exitoso
         long finTimer = System.currentTimeMillis();
         int tiempo = (int) ((finTimer - this.inicioTimer));
-        System.out.println(tiempo + " milisegundos");
-        System.out.println("Worker : Se enconctro el nonce correcto y es " + nonce);
+        String rta = String.format("Worker: Se enconctro el nonce correcto y es %s y tardo %d milisegundos", nonce, tiempo);
+        System.out.println(rta);
     }
 
     public void noSeEncontroNonceCorrecto() { //caso F , si llego a este mensaje fui el ultimo thread en fallar

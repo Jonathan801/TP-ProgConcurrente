@@ -20,8 +20,8 @@ public class Main {
 //        System.out.println("2");
 
         //Atrapar los input del usuario
-        int cantidadThreads = 1;
-        dificultad = 1;
+        int cantidadThreads = 2;
+        dificultad = 2;
         String texto = "";
 
         Buffer buffer = new Buffer(2);
