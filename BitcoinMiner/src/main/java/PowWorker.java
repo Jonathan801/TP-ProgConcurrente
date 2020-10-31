@@ -43,6 +43,7 @@ public class PowWorker extends Thread implements Runnable {
         }else if(encontrado){
             pool.seEncontroNonce(this,indice - 1);
         }
+        //System.out.println("Worker Se termino mi ejecucion");
     }
 
     private void validation(long nonceCandidato){
@@ -60,16 +61,17 @@ public class PowWorker extends Thread implements Runnable {
     }
 
     public void seEncontroNonceCorrecto(long nonce) { // caso exitoso
+
         long finTimer = System.currentTimeMillis();
         int tiempo = (int) ((finTimer - this.inicioTimer));
-        String rta = String.format("Worker: Se enconctro el nonce correcto y es %s y tardo %d milisegundos", nonce, tiempo);
+        String rta = String.format("Worker: Se encontro el nonce correcto y es %s y tardo %d milisegundos", nonce, tiempo);
         System.out.println(rta);
     }
 
-    public void noSeEncontroNonceCorrecto() { //caso F , si llego a este mensaje fui el ultimo thread en fallar
+    public void noSeEncontroNonceCorrecto() {
         long finTimer = System.currentTimeMillis();
-        int tiempo = (int) ((finTimer - this.inicioTimer));
-        String rta = String.format("Worker: Ningun worker encontro el Nonce, tardo %s milisegundossegundos", tiempo);
+        double tiempo = (double) ((finTimer - this.inicioTimer));
+        String rta = String.format("No se logro encontrar en ningun Worker el Nonce Correcto y se tardo %d milisegundos",tiempo);
         System.out.println(rta);
     }
 
