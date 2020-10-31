@@ -30,13 +30,14 @@ public class Main {
         ThreadPool threadPool = new ThreadPool(buffer, cantidadThreads, dificultad);
         System.out.println("Los Workers se lanzaron");
 
-        int elevado = (int) Math.pow(2,32); // 2^32
-        int r = elevado / cantidadThreads;
-        int resto = elevado % cantidadThreads;
+        long elevado = (long) Math.pow(2,32); // 2^32
+        System.out.println(elevado);
+        long r = elevado / cantidadThreads;
+        long resto = elevado % cantidadThreads;
         int i = 0;
         while(i<cantidadThreads) {
-            int minimo = i * r;
-            int maximo = (r * (i + 1));
+            long minimo = i * r;
+            long maximo = (r * (i + 1));
             //bit = resto>0? 1 : 0;
             //resto--;
             //int maximo = (r * (i + 1)) + bit;

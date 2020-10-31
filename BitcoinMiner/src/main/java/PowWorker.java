@@ -30,9 +30,9 @@ public class PowWorker extends Thread implements Runnable {
         this.inicioTimer = System.currentTimeMillis();
         this.unidad = buffer.read();
 
-        int maximo = unidad.getMaximo();
-        int minimo = unidad.getMinimo();
-        int indice = minimo;
+        long maximo = unidad.getMaximo();
+        long minimo = unidad.getMinimo();
+        long indice = minimo;
 
         while(!encontrado && !alguienLoEncontro && indice < maximo ){
             this.validation(indice);
@@ -45,7 +45,7 @@ public class PowWorker extends Thread implements Runnable {
         }
     }
 
-    private void validation(int nonceCandidato){
+    private void validation(long nonceCandidato){
         boolean local = true;
         byte[] one = unidad.getTexto().getBytes();
         byte[] two = BigInteger.valueOf(nonceCandidato).toByteArray();
@@ -59,7 +59,7 @@ public class PowWorker extends Thread implements Runnable {
         encontrado = local;
     }
 
-    public void seEncontroNonceCorrecto(int nonce) { // caso exitoso
+    public void seEncontroNonceCorrecto(long nonce) { // caso exitoso
         long finTimer = System.currentTimeMillis();
         int tiempo = (int) ((finTimer - this.inicioTimer));
         String rta = String.format("Worker: Se enconctro el nonce correcto y es %s y tardo %d milisegundos", nonce, tiempo);
@@ -67,11 +67,10 @@ public class PowWorker extends Thread implements Runnable {
     }
 
     public void noSeEncontroNonceCorrecto() { //caso F , si llego a este mensaje fui el ultimo thread en fallar
-        //Paro mi reloj interno y lo imprimo sin el nonce(ya que falle dahhh) y pidiendo perdon
         long finTimer = System.currentTimeMillis();
-        double tiempo = (double) ((finTimer - this.inicioTimer));
-        System.out.println(tiempo + " segundos");
-        System.out.println("Worker : No se logro encontrar en ningun Worker el Nonce Correcto");
+        int tiempo = (int) ((finTimer - this.inicioTimer));
+        String rta = String.format("Worker: Ningun worker encontro el Nonce, tardo %s milisegundossegundos", tiempo);
+        System.out.println(rta);
     }
 
     public void seEncontro(){

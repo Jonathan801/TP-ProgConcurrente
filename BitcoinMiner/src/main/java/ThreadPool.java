@@ -16,7 +16,7 @@ public class ThreadPool {
             System.out.println("Etapa : Se creo y inicio el thread " + i);
         }
     }
-    public void seEncontroNonce(PowWorker pow,int nonce){
+    public void seEncontroNonce(PowWorker pow, long nonce){
         for (int indice=0; indice<cantidadThreads; indice ++){
             workers.get(indice).seEncontro();
         }
