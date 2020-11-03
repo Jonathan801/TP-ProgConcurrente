@@ -6,52 +6,76 @@ import java.security.NoSuchAlgorithmException;
 
 public class PowWorker extends Thread implements Runnable {
 
-    //algo = MessageDigest.getInstance("SHA-256")
-    //obtiene una unidad de trabajo
-    //agarra aplica el hash
-    //Bytes bytes =  algo.digest(unidadDeTrabajo)
-
-    //retorna posible nonce?
+    private ThreadPool pool;
+    private MessageDigest sha256;
+    private UnidadDeTrabajo unidad;
     private final Buffer buffer;
-    private MessageDigest algo;
-    public PowWorker(Buffer buffer) {
+    private boolean encontrado = false;
+    private boolean alguienLoEncontro = false;
+    private int dificultad;
+    private long inicioTimer;
+
+    public PowWorker(Buffer buffer,ThreadPool pool,int dificultad) {
         this.buffer = buffer;
+        this.pool = pool;
+        this.dificultad = dificultad;
         try {
-            algo = MessageDigest.getInstance("SHA-256");
+            sha256 = MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+
     }
     public void run() {
-        UnidadDeTrabajo unidadDeTrabajo = buffer.read();
-        int maximo = unidadDeTrabajo.getMaximo();
-        int minimo = unidadDeTrabajo.getMinimo();
-        for (int indice = minimo; indice < maximo; indice++){
-            byte[] bytes =  algo.digest(BigInteger.valueOf(indice).toByteArray());
+        this.inicioTimer = System.currentTimeMillis();
+        this.unidad = buffer.read();
 
-            buffer2.write(new Intento(bytes, indice,indice == maximo));
+        long maximo = unidad.getMaximo();
+        long minimo = unidad.getMinimo();
+        long indice = minimo;
 
-
+        while(!encontrado && !alguienLoEncontro && indice < maximo ){
+            this.validation(indice);
+            indice++;
         }
+        if(!encontrado&&!alguienLoEncontro){
+            pool.noSeEncontroNonce(this);
+        }else if(encontrado){
+            pool.seEncontroNonce(this,indice - 1);
+        }
+        //System.out.println("Worker Se termino mi ejecucion");
+    }
+
+    private void validation(long nonceCandidato){
+        boolean local = true;
+        byte[] one = unidad.getTexto().getBytes();
+        byte[] two = BigInteger.valueOf(nonceCandidato).toByteArray();
+        byte[] combined = new byte[one.length + two.length];
+        System.arraycopy(one,0,combined,0         ,one.length);
+        System.arraycopy(two,0,combined,one.length,two.length);
+        byte[] result = sha256.digest(combined);
+        for(int indice = 0;indice<this.dificultad;indice++){
+            local = local && result[indice] == 0;
+        }
+        encontrado = local;
+    }
+
+    public void seEncontroNonceCorrecto(long nonce) { // caso exitoso
+
+        long finTimer = System.currentTimeMillis();
+        int tiempo = (int) ((finTimer - this.inicioTimer));
+        String rta = String.format("Worker: Se encontro el nonce correcto y es %s y tardo %d milisegundos", nonce, tiempo);
+        System.out.println(rta);
+    }
+
+    public void noSeEncontroNonceCorrecto() {
+        long finTimer = System.currentTimeMillis();
+        double tiempo = (double) ((finTimer - this.inicioTimer));
+        String rta = String.format("No se logro encontrar en ningun Worker el Nonce Correcto y se tardo %d milisegundos",tiempo);
+        System.out.println(rta);
+    }
+
+    public void seEncontro(){
+        alguienLoEncontro = true;
     }
 }
-/*
-int resto = 2^32%cantThreads;
-int r = 2^32/cantThreads;
-for (int i = 0; i < cantThreads; i++){
-    min = i*r;
-    max = (r * (i +1)) -1;
-    if (i == cantThreads -1){max = max + resto}
-}
-
-int resto = 2^32%cantThreads;
-int r = 2^32/cantThreads;
-min = 0;
-max =
-for (int i = 0; i < cantThreads; i++){
-    buffer.write()
-    min = i*r;
-    max = (r * (i +1)) -1;
-    if (i == cantThreads -1){max = max + resto}
-}
-        */
